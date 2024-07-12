@@ -26,6 +26,11 @@ func Init(path string) error {
 		return fmt.Errorf("failed to create HEAD file: %v", err)
 	}
 
+	masterRef := filepath.Join(gitDir, "refs", "heads", "master")
+	if err := os.WriteFile(masterRef, []byte(""), 0644); err != nil {
+		return fmt.Errorf("failed to create master branch: %v", err)
+	}
+
 	configPath := filepath.Join(gitDir, "config")
 	configContent := `[core]
 	repositoryformatversion = 0

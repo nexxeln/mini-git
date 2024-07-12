@@ -62,6 +62,17 @@ func main() {
 			os.Exit(1)
 		}
 
+	case "branch":
+		if err := commands.Branch(cwd, args); err != nil {
+			fmt.Println("Error handling branch command:", err)
+			os.Exit(1)
+		}
+	case "checkout":
+		if err := commands.Checkout(cwd, args); err != nil {
+			fmt.Println("Error handling checkout command:", err)
+			os.Exit(1)
+		}
+
 	default:
 		fmt.Println("Unknown command:", command)
 		os.Exit(1)
