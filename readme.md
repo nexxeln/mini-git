@@ -12,8 +12,8 @@ todo:
 
 - [ ] implement diff functionality
 - [ ] add branching support
-  - [ ] create branches
-  - [ ] switch between branches
+  - [x] create branches
+  - [x] switch between branches
   - [ ] merge branches
 - [ ] implement .gitignore functionality
 - [ ] improve `add` command to support multiple files and directories
