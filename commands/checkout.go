@@ -70,11 +70,20 @@ func updateWorkingDirectory(repoRoot string, tree *tree.Tree) error {
 		if err != nil {
 			return err
 		}
-		if info.IsDir() && info.Name() == ".mini-git" {
-			return filepath.SkipDir
+		if info.IsDir() {
+			if info.Name() == ".mini-git" {
+				return filepath.SkipDir
+			}
+			return nil
 		}
-		if path != repoRoot {
-			os.RemoveAll(path)
+		relPath, err := filepath.Rel(repoRoot, path)
+		if err != nil {
+			return err
+		}
+		if relPath != "." {
+			if err := os.Remove(path); err != nil {
+				return err
+			}
 		}
 		return nil
 	})
@@ -85,16 +94,16 @@ func updateWorkingDirectory(repoRoot string, tree *tree.Tree) error {
 	for _, entry := range tree.Entries {
 		blob, err := objects.RetrieveBlob(repoRoot, entry.Hash)
 		if err != nil {
-			return fmt.Errorf("failed to retrieve blob: %v", err)
+			return fmt.Errorf("failed to retrieve blob for %s: %v", entry.Name, err)
 		}
 
 		filePath := filepath.Join(repoRoot, entry.Name)
 		if err := os.MkdirAll(filepath.Dir(filePath), 0755); err != nil {
-			return fmt.Errorf("failed to create directories: %v", err)
+			return fmt.Errorf("failed to create directories for %s: %v", entry.Name, err)
 		}
 
 		if err := os.WriteFile(filePath, blob.Content, 0644); err != nil {
-			return fmt.Errorf("failed to write file: %v", err)
+			return fmt.Errorf("failed to write file %s: %v", entry.Name, err)
 		}
 	}
 

@@ -67,9 +67,16 @@ func main() {
 			fmt.Println("Error handling branch command:", err)
 			os.Exit(1)
 		}
+
 	case "checkout":
 		if err := commands.Checkout(cwd, args); err != nil {
 			fmt.Println("Error handling checkout command:", err)
+			os.Exit(1)
+		}
+
+	case "merge":
+		if err := commands.Merge(cwd, args); err != nil {
+			fmt.Println("Error handling merge command:", err)
 			os.Exit(1)
 		}
 
