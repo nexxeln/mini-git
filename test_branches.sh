@@ -22,6 +22,15 @@ echo "Content on feature branch" > test.txt
 ../mini-git add test.txt
 ../mini-git commit "Modify test.txt on feature"
 
+echo "Adding all files and subdirectories to feature branch..."
+touch test1.txt
+mkdir test_dir
+mkdir test_dir/test_subdir
+echo "Content on feature branch" > test_dir/test2.txt
+echo "Content on feature branch" > test_dir/test3.txt
+echo "Content on feature branch" > test_dir/test_subdir/test4.txt
+../mini-git add test_dir
+
 echo "Switching back to master branch..."
 ../mini-git checkout master
 

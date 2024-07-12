@@ -31,11 +31,15 @@ func main() {
 
 	case "add":
 		if len(args) < 1 {
-			fmt.Println("Usage: mini-git add <file>")
+			fmt.Println("Usage: mini-git add <file> [<file> ...]")
+			fmt.Println("       mini-git add <directory> <file> [<file> ...] (any mix of directories and files in the current directory)")
+			fmt.Println("       mini-git add . (to add all files in the current directory)")
+
 			os.Exit(1)
 		}
-		if err := commands.Add(cwd, args[0]); err != nil {
-			fmt.Println("Error adding file:", err)
+
+		if err := commands.Add(args); err != nil {
+			fmt.Println("Error adding files:", err)
 			os.Exit(1)
 		}
 

@@ -7,7 +7,7 @@ import (
 
 func FindRoot(start string) (string, error) {
 	current, err := filepath.Abs(start)
-	if err != nil {
+	if err != nil{
 		return "", err
 	}
 
