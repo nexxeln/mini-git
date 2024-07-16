@@ -16,5 +16,5 @@ todo:
   - [x] switch between branches
   - [ ] merge branches
 - [ ] implement .gitignore functionality
-- [ ] improve `add` command to support multiple files and directories
+- [x] improve `add` command to support multiple files and directories
 - [ ] add `reset` command to unstage changes or move head
