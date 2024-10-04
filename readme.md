@@ -18,4 +18,3 @@ todo:
 - [ ] implement .gitignore functionality
 - [ ] improve `add` command to support multiple files and directories
 - [ ] add `reset` command to unstage changes or move head
-- test
