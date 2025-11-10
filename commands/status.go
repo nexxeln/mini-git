@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/nexxeln/mini-git/blob"
+	"github.com/nexxeln/mini-git/gitignore"
 	"github.com/nexxeln/mini-git/objects"
 	"github.com/nexxeln/mini-git/repository"
 )
@@ -160,16 +161,28 @@ func getUnstagedChanges(repoRoot string, staged []string, committedFiles map[str
 		stagedMap[file] = true
 	}
 
+	// Load .gitignore rules
+	ignoreRules, err := gitignore.LoadIgnoreRules(repoRoot)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load .gitignore rules: %v", err)
+	}
+
 	var unstaged []string
-	err := filepath.Walk(repoRoot, func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(repoRoot, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 
 		if info.IsDir() {
-			if info.Name() == ".mini-git" {
+			// Check if directory should be skipped based on .gitignore
+			if ignoreRules.ShouldSkipDir(path) {
 				return filepath.SkipDir
 			}
+			return nil
+		}
+
+		// Check if file should be ignored based on .gitignore
+		if ignoreRules.IsIgnored(path, false) {
 			return nil
 		}
 

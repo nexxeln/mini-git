@@ -7,6 +7,7 @@ implemented features:
 - [x] commit changes (`commit`)
 - [x] view commit history (`log`)
 - [x] check repository status (`status`)
+- [x] .gitignore support (respects .gitignore patterns in `add` and `status` commands)
 
 todo:
 
@@ -15,6 +16,5 @@ todo:
   - [x] create branches
   - [x] switch between branches
   - [ ] merge branches
-- [ ] implement .gitignore functionality
 - [ ] improve `add` command to support multiple files and directories
 - [ ] add `reset` command to unstage changes or move head

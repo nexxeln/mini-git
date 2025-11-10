@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/nexxeln/mini-git/blob"
+	"github.com/nexxeln/mini-git/gitignore"
 	"github.com/nexxeln/mini-git/objects"
 	"github.com/nexxeln/mini-git/repository"
 )
@@ -19,6 +20,22 @@ func Add(startPath, filePath string) error {
 	absFilePath, err := filepath.Abs(filePath)
 	if err != nil {
 		return fmt.Errorf("failed to get absolute path: %v", err)
+	}
+
+	// Load .gitignore rules
+	ignoreRules, err := gitignore.LoadIgnoreRules(repoRoot)
+	if err != nil {
+		return fmt.Errorf("failed to load .gitignore rules: %v", err)
+	}
+
+	// Check if file is ignored
+	fileInfo, err := os.Stat(absFilePath)
+	if err != nil {
+		return fmt.Errorf("failed to stat file: %v", err)
+	}
+
+	if ignoreRules.IsIgnored(absFilePath, fileInfo.IsDir()) {
+		return fmt.Errorf("the file '%s' is ignored by .gitignore", filePath)
 	}
 
 	content, err := os.ReadFile(absFilePath)
